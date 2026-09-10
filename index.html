@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2f75a3">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<title>Horários</title>
+<style>
+:root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#18232d;background:#f4f6f8}
+*{box-sizing:border-box}body{margin:0}
+header{background:#2f75a3;color:#fff;padding:16px;position:sticky;top:0;z-index:3}
+header h1{margin:0;font-size:21px}
+header p{margin:3px 0 0;font-size:13px;opacity:.9}
+.people{display:flex;gap:8px;margin-top:12px}
+.people button{flex:1;padding:9px 8px}
+nav{display:flex;gap:7px;overflow-x:auto;padding:10px 12px;background:#fff;border-bottom:1px solid #dfe4e8;position:sticky;top:89px;z-index:2}
+button{border:0;border-radius:10px;padding:9px 13px;background:#edf1f4;color:#26343f;font-size:15px;white-space:nowrap}
+button.active{background:#fff;color:#2f75a3;box-shadow:inset 0 -2px #fff;font-weight:700}
+nav button.active{background:#2f75a3;color:#fff;box-shadow:none}
+main{max-width:650px;margin:0 auto;padding:15px 12px 30px}
+.daytitle{display:flex;justify-content:space-between;align-items:baseline;margin:4px 4px 12px}
+.daytitle h2{margin:0;font-size:26px}.date{color:#687783;font-size:14px}
+.lesson{display:grid;grid-template-columns:92px 1fr auto;gap:12px;align-items:center;background:#fff;border-radius:14px;padding:14px 13px;margin:8px 0;box-shadow:0 1px 3px #00000010}
+.time{font-variant-numeric:tabular-nums;color:#536571;font-size:14px}
+.subject{font-weight:700;font-size:17px}.room{color:#657581;font-size:13px;text-align:right}
+.empty{background:#fff;border-radius:14px;padding:25px;color:#667681;text-align:center}
+.note{font-size:12px;color:#687783;margin:12px 5px 0}
+@media(max-width:430px){.lesson{grid-template-columns:82px 1fr}.room{grid-column:2;text-align:left;margin-top:-8px}}
+</style>
+</head>
+<body>
+<header>
+  <h1 id="title">Horários</h1>
+  <p id="subtitle"></p>
+  <div class="people">
+    <button id="daughter" onclick="selectPerson('daughter')">5.º B</button>
+    <button id="son" onclick="selectPerson('son')">10.º A1</button>
+  </div>
+</header>
+<nav id="days"></nav>
+<main>
+  <div class="daytitle"><h2 id="day"></h2><span class="date" id="date"></span></div>
+  <section id="schedule"></section>
+</main>
+<script>
+const schedules={
+daughter:{
+ label:"5.º B · 2026–2027",
+ days:{
+ "Segunda":[["08:10–09:00","Mat","B.P0.07"],["09:00–09:50","Ing","B.P0.07"],["10:05–10:55","Ed. F.","Gin."],["10:55–11:45","C Nat","B.P0.07"],["12:00–12:50","Port","B.P0.07"]],
+ "Terça":[["09:00–09:50","Ing","B.P0.07"],["10:05–10:55","Port","B.P0.07"],["12:00–12:50","Mat","B.P0.07"],["14:00–14:50","HGP","B.P0.07"],["15:00–15:50","EV","B.P0.07"]],
+ "Quarta":[["08:10–09:00","Ed. F.","Gin."],["10:05–10:55","Mat","B.P0.07"],["12:00–12:50","Port","B.P0.07"]],
+ "Quinta":[["08:10–09:00","Port","B.P0.07"],["10:05–10:55","HGP","B.P0.07"],["10:55–11:45","EMRC","B.P0.07"],["12:00–12:50","ET","A.P2.04"],["14:00–14:50","EDI","A.P1.01"],["15:00–15:50","Mat","B.P0.07"],["15:50–16:40","Ac.Alunos · Cid.e Des.","Gab 2 · B.P0.07"]],
+ "Sexta":[["08:10–09:00","C Nat","B.P0.07"],["09:00–09:50","Ing","B.P0.07"],["10:05–10:55","TIC","B.P0.07"],["10:55–11:45","EM","D.P1.01"],["14:00–14:50","HGP","B.P0.07"],["15:00–15:50","Ed. F.","Gin."],["15:50–16:40","EV","B.P0.07"]]
+ }},
+son:{
+ label:"10.º A1 · 2026–2027",
+ days:{
+ "Segunda":[["08:10–09:00","EDI-2.ºS / EMRC-1.ºS","A.P1.01 / C.P1.07"],["09:00–09:50","Ing","C.P1.07"],["10:05–10:55","Bio Geo","C.P1.07"],["12:00–12:50","Port","C.P1.07"]],
+ "Terça":[["08:10–09:00","MAT A","C.P1.07"],["10:05–10:55","FQ A","C.P1.07"],["12:00–12:50","Fil","C.P1.07"],["12:50–13:40","Bio Geo","C.P1.07"],["15:00–15:50","Port","C.P1.07"],["15:50–16:40","Ed. F.","Gin."]],
+ "Quarta":[["08:10–09:00","MAT A","C.P1.07"],["10:05–10:55","Fil","C.P1.07"],["12:00–12:50","Ing","C.P1.07"]],
+ "Quinta":[["08:10–09:00","MAT A","C.P1.07"],["10:05–10:55","FQ A","C.P1.07"],["12:00–12:50","Port","C.P1.07"]],
+ "Sexta":[["08:10–09:00","FQ A","C.P1.07"],["10:05–10:55","Ed. F.","Gin."],["10:55–11:45","Ing","C.P1.07"],["12:00–12:50","BG-T2 / FQA-T1","C.P1.07 / LAB"],["12:50–13:40","BG-T1 / FQA-T2","C.P1.07 / LAB"],["15:00–15:50","Bio Geo","C.P1.07"]]
+ }}
+};
+const names=["Segunda","Terça","Quarta","Quinta","Sexta"];
+const nav=document.getElementById("days"),dayEl=document.getElementById("day"),dateEl=document.getElementById("date"),schedule=document.getElementById("schedule");
+const jsToDay=["Domingo","Segunda","Terça","Quarta","Quinta","Sexta","Sábado"];
+let person=localStorage.getItem("horarios_person")||"daughter";
+let selected=jsToDay[new Date().getDay()]; if(!names.includes(selected)) selected="Segunda";
+names.forEach(d=>{let b=document.createElement("button");b.textContent=d.slice(0,3);b.dataset.day=d;b.onclick=()=>show(d);nav.appendChild(b)});
+function selectPerson(p){person=p;localStorage.setItem("horarios_person",p);show(selected);renderPerson()}
+function renderPerson(){
+ document.getElementById("subtitle").textContent=schedules[person].label;
+ document.getElementById("daughter").classList.toggle("active",person==="daughter");
+ document.getElementById("son").classList.toggle("active",person==="son");
+}
+function show(d){
+ selected=d;
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.day===d));
+ dayEl.textContent=d;
+ const now=new Date();dateEl.textContent=(d===jsToDay[now.getDay()])?"Hoje":"";
+ schedule.innerHTML="";
+ const lessons=schedules[person].days[d]||[];
+ lessons.forEach(x=>{
+  const a=document.createElement("article");a.className="lesson";
+  a.innerHTML=`<div class="time">${x[0]}</div><div class="subject">${x[1]}</div><div class="room">${x[2]}</div>`;
+  schedule.appendChild(a);
+ });
+ if(!lessons.length)schedule.innerHTML='<div class="empty">Sem aulas neste dia.</div>';
+}
+renderPerson();show(selected);
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js"));
+}
+</script>
+</body>
+</html>
