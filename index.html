@@ -3,10 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#2f75a3">
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-192.png">
-<title>Horários</title>
+<meta name="theme-color" content="#2f75a3">\n<link rel="manifest" href="manifest.json">\n<link rel="icon" href="icon-192.png">
+<title>Horários dos Miúdos</title>
 <style>
 :root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#18232d;background:#f4f6f8}
 *{box-sizing:border-box}body{margin:0}
@@ -36,7 +34,7 @@ main{max-width:650px;margin:0 auto;padding:15px 12px 30px}
   <p id="subtitle"></p>
   <div class="people">
     <button id="daughter" onclick="selectPerson('daughter')">5.º B</button>
-    <button id="son" onclick="selectPerson('son')">10.º A1</button>
+    <button id="son" onclick="selectPerson('son')">10.º A2</button>
   </div>
 </header>
 <nav id="days"></nav>
@@ -56,14 +54,14 @@ daughter:{
  "Sexta":[["08:10–09:00","C Nat","B.P0.07"],["09:00–09:50","Ing","B.P0.07"],["10:05–10:55","TIC","B.P0.07"],["10:55–11:45","EM","D.P1.01"],["14:00–14:50","HGP","B.P0.07"],["15:00–15:50","Ed. F.","Gin."],["15:50–16:40","EV","B.P0.07"]]
  }},
 son:{
- label:"10.º A1 · 2026–2027",
+ label:"10.º A2 · 1.º semestre",
  days:{
- "Segunda":[["08:10–09:00","EDI-2.ºS / EMRC-1.ºS","A.P1.01 / C.P1.07"],["09:00–09:50","Ing","C.P1.07"],["10:05–10:55","Bio Geo","C.P1.07"],["12:00–12:50","Port","C.P1.07"]],
- "Terça":[["08:10–09:00","MAT A","C.P1.07"],["10:05–10:55","FQ A","C.P1.07"],["12:00–12:50","Fil","C.P1.07"],["12:50–13:40","Bio Geo","C.P1.07"],["15:00–15:50","Port","C.P1.07"],["15:50–16:40","Ed. F.","Gin."]],
- "Quarta":[["08:10–09:00","MAT A","C.P1.07"],["10:05–10:55","Fil","C.P1.07"],["12:00–12:50","Ing","C.P1.07"]],
- "Quinta":[["08:10–09:00","MAT A","C.P1.07"],["10:05–10:55","FQ A","C.P1.07"],["12:00–12:50","Port","C.P1.07"]],
- "Sexta":[["08:10–09:00","FQ A","C.P1.07"],["10:05–10:55","Ed. F.","Gin."],["10:55–11:45","Ing","C.P1.07"],["12:00–12:50","BG-T2 / FQA-T1","C.P1.07 / LAB"],["12:50–13:40","BG-T1 / FQA-T2","C.P1.07 / LAB"],["15:00–15:50","Bio Geo","C.P1.07"]]
- }}
+ "Segunda":[["08:10–09:50","Filo.","C.P1.08"],["10:05–11:45","PORT","C.P1.08"],["12:00–13:40","ING","C.P1.08"]],
+ "Terça":[["08:10–09:50","G.D.A","B.P3.13"],["10:05–11:45","E.FIS","Gin."],["12:00–13:40","FQ.A","C.P1.08"],["15:00–15:50","ING","C.P1.08"],["15:50–16:40","PORT","C.P1.08"],["16:45–17:35","EMRC / EDI","C.P1.08 / A.P1.01"]],
+ "Quarta":[["08:10–09:50","FQ.A","C.P1.08"],["10:05–11:45","M.A","C.P1.08"],["12:00–13:40","PORT","C.P1.08"]],
+ "Quinta":[["08:10–09:50","G.D.A","B.P3.13"],["10:05–11:45","M.A","C.P1.08"],["12:00–13:40","FQ.A","C.P1.08"]],
+ "Sexta":[["08:10–09:50","G.D.A","B.P3.13"],["10:05–11:45","M.A","C.P1.08"],["12:00–12:50","E.FIS","Gin."],["12:50–13:40","ING","C.P1.08"],["15:00–15:50","Filo.","C.P1.08"],["15:50–16:40","FQ.A","C.P1.08"]]
+ }}}
 };
 const names=["Segunda","Terça","Quarta","Quinta","Sexta"];
 const nav=document.getElementById("days"),dayEl=document.getElementById("day"),dateEl=document.getElementById("date"),schedule=document.getElementById("schedule");
@@ -93,10 +91,5 @@ function show(d){
 }
 renderPerson();show(selected);
 </script>
-<script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js"));
-}
-</script>
-</body>
+<script>if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js")); }</script>\n</body>
 </html>
