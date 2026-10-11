@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#2f75a3">\n<link rel="manifest" href="manifest.json">\n<link rel="icon" href="icon-192.png">
+<meta name="theme-color" content="#2f75a3">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
 <title>Horários dos Miúdos</title>
 <style>
 :root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#18232d;background:#f4f6f8}
@@ -91,5 +93,14 @@ function show(d){
 }
 renderPerson();show(selected);
 </script>
-<script>if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js")); }</script>\n</body>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("./sw.js").catch(function (err) {
+      console.error("Falha ao registar service worker:", err);
+    });
+  });
+}
+</script>
+</body>
 </html>
